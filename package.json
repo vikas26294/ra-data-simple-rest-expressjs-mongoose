@@ -4,11 +4,11 @@
   "description": "Express js backend utility for ra-data-simple-rest",
   "main": "dist/index.js",
   "scripts": {
-    "build": "./node_modules/typescript/bin/tsc",
+    "build": "tsc",
     "prepare": "npm run clean && npm run build",
     "clean": "rm -rf dist",
     "postinstall": "npm run build",
-    "test": "./node_modules/jest/bin/jest.js test"
+    "test": "jest test"
   },
   "repository": {
     "type": "git",

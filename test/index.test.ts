@@ -1,7 +1,7 @@
-import * as express from "express";
-import { MongoMemoryServer } from "mongodb-memory-server";
+import express from "express";
 import { Mongoose } from "mongoose";
-import * as request from "supertest";
+import { MongoMemoryServer } from "mongodb-memory-server";
+import request from "supertest";
 import * as bodyParser from "body-parser";
 import rest, { CREATE, GET_LIST, GET_ONE, UPDATE, DELETE } from "../src/index";
 import { connect, User } from "./models";
