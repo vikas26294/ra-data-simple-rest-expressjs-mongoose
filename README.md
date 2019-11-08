@@ -34,10 +34,10 @@ rest.default({
 
 The `default` function takes mandatory object that contain following keys:
 
-| Property    | Type           | Default                                                              | Description                       |
-| ----------- | -------------- | -------------------------------------------------------------------- | --------------------------------- |
-| router      | data object    | null                                                                 | instance of express               |
-| route       | string         | ""                                                                   | api route                         |
-| model       | Mongoose.Model | null                                                                 | Mongoose model to create APIs for |
-| actions     | array          | [rest.CREATE, rest.GET_LIST, rest.GET_ONE, rest.UPDATE, rest.DELETE] | apis to expose                    |
-| middlewares | array          | []                                                                   | any middlewares to apply on apis  |
+| Property    | Type             | Default                                                              | Description                       |
+| ----------- | ---------------- | -------------------------------------------------------------------- | --------------------------------- |
+| router      | express instance | null                                                                 | instance of express               |
+| route       | string           | ""                                                                   | api route                         |
+| model       | Mongoose.Model   | null                                                                 | Mongoose model to create APIs for |
+| actions     | array            | [rest.CREATE, rest.GET_LIST, rest.GET_ONE, rest.UPDATE, rest.DELETE] | apis to expose                    |
+| middlewares | array            | []                                                                   | any middlewares to apply on apis  |
