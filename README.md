@@ -11,27 +11,21 @@ npm install --save ra-data-simple-rest-expressjs
 ## Usage
 
 ```ts
-import express from "express";
-import * as bodyParser from "body-parser";
-import rest, {
-  CREATE,
-  GET_LIST,
-  GET_ONE,
-  UPDATE,
-  DELETE
-} from "ra-data-simple-rest-expressjs";
+var express = require("express");
+var bodyParser = require("body-parser");
+var rest = require("ra-data-simple-rest-expressjs");
 
-import { User } from "./models";
+var User = require("./models/User");
 
-const app = express();
+var app = express();
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-rest({
+rest.default({
   router: app,
-  route: "/users",
+  route: "/user",
   model: User,
-  actions: [CREATE, GET_LIST, GET_ONE, UPDATE, DELETE]
+  actions: [rest.CREATE, rest.GET_LIST, rest.GET_ONE, rest.UPDATE, rest.DELETE],
   middlewares: []
 });
 ```
