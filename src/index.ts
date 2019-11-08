@@ -183,7 +183,7 @@ const ACTION_TO_FUNC = {
 
 type restProps = {
   router: Router;
-  route: string;
+  route?: string;
   model: Model<any>;
   actions?: Array<string>;
   middlewares?: Array<RequestHandler>;
@@ -194,7 +194,7 @@ type restProps = {
  */
 const rest = ({
   router,
-  route,
+  route = "",
   model,
   actions = Object.keys(ACTION_TO_FUNC),
   middlewares = []
