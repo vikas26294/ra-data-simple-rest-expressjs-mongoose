@@ -1,13 +1,12 @@
 {
   "name": "ra-data-simple-rest-expressjs",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Express js backend utility for ra-data-simple-rest",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "prepare": "npm run clean && npm run build",
     "clean": "rm -rf dist",
-    "postinstall": "npm run build",
     "test": "jest test"
   },
   "repository": {
