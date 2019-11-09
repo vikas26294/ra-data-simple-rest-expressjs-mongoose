@@ -5,7 +5,7 @@ Build API for React admin simple rest client in a project using Express and Mong
 ## Install
 
 ```
-npm install --save ra-data-simple-rest-expressjs
+npm install --save ra-data-simple-rest-expressjs-mongoose
 ```
 
 ## Usage
@@ -13,7 +13,7 @@ npm install --save ra-data-simple-rest-expressjs
 ```ts
 var express = require("express");
 var bodyParser = require("body-parser");
-var rest = require("ra-data-simple-rest-expressjs");
+var rest = require("ra-data-simple-rest-expressjs-mongoose");
 
 var User = require("./models/User");
 
