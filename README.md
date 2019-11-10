@@ -1,6 +1,6 @@
 # Express Mongoose
 
-Build API for React admin simple rest client in a project using Express and Mongoose.
+Build API for [React admin simple rest client](https://github.com/marmelab/react-admin/edit/master/packages/ra-data-simple-rest) in a project using Express and Mongoose.
 
 ## Install
 
