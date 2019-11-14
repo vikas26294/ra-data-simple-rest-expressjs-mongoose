@@ -12,8 +12,7 @@ const mongod = new MongoMemoryServer({
 
 const setupServer = () => {
   const app = express();
-  app.use(bodyParser.json({ limit: "50mb" }));
-  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.json());
   return app;
 };
 
@@ -23,11 +22,9 @@ describe("User Test", () => {
   beforeAll(async () => {
     await mongod.start();
     const url = await mongod.getConnectionString();
-
     db = await connect(`${url}`);
   });
   afterAll(async () => {
-    // await disconnect()
     await db.connection.close();
     await mongod.stop();
   });
@@ -38,42 +35,51 @@ describe("User Test", () => {
       router: app,
       route: "/users",
       model: User,
-      actions: [CREATE, GET_LIST, GET_ONE, UPDATE, DELETE]
+      actions: [CREATE, GET_LIST, GET_ONE, UPDATE, DELETE],
+      select: "+name -username +password"
     });
 
-    // post
+    // post - add user
     let res = await request(app)
       .post("/users")
-      .send({ name: "Vikas" });
+      .send({ name: "Vikas", username: "vikas26", password: "123456" });
     expect(res.status).toBe(201);
     expect(res.body.id).not.toBeNull();
     expect(res.body.name).toBe("Vikas");
+    expect(res.body).not.toHaveProperty("username");
+    expect(res.body.password).toBe("123456");
 
+    // added user's id
     const { id } = res.body;
 
-    // put
+    // put - update user
     res = await request(app)
       .put(`/users/${id}`)
       .send({ name: "Balwada" });
     expect(res.status).toBe(200);
     expect(res.body.name).toBe("Balwada");
+    expect(res.body).not.toHaveProperty("username");
+    expect(res.body.password).toBe("123456");
 
-    // get
+    // get - get user
     res = await request(app).get(`/users/${id}`);
     expect(res.status).toBe(200);
     expect(res.body.name).toBe("Balwada");
+    expect(res.body).not.toHaveProperty("username");
+    expect(res.body.password).toBe("123456");
 
+    // add new users
     await request(app)
       .post("/users")
-      .send({ name: "Jeff" });
+      .send({ name: "Jeff", username: "jeff", password: "jeff1234" });
     await request(app)
       .post("/users")
-      .send({ name: "Bob" });
+      .send({ name: "Bob", username: "bob", password: "bob1234" });
     await request(app)
       .post("/users")
-      .send({ name: "Steven" });
+      .send({ name: "Steven", username: "jeff", password: "steven1234" });
 
-    // get list
+    // get list of users
     res = await request(app)
       .get("/users")
       .query({
@@ -84,6 +90,10 @@ describe("User Test", () => {
     expect(res.body).toHaveLength(2);
     const users = res.body;
     expect(users[0].name).toBe("Balwada");
+    expect(users[0]).not.toHaveProperty("username");
+    expect(users[0].password).toBe("123456");
     expect(users[1].name).toBe("Bob");
+    expect(users[1]).not.toHaveProperty("username");
+    expect(users[1].password).toBe("bob1234");
   });
 });

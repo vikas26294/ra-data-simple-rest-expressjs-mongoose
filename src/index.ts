@@ -42,7 +42,8 @@ const getList = (
   router: Router,
   route: string,
   model: Model<any>,
-  middlewares: Array<RequestHandler>
+  middlewares: Array<RequestHandler>,
+  select: string | object
 ) => {
   router.get(
     route + "/",
@@ -72,6 +73,7 @@ const getList = (
           .sort(sort)
           .skip(skip)
           .limit(limit)
+          .select(select)
           .exec()
       );
       const total = await model.count(filter);
@@ -89,14 +91,15 @@ const getOne = (
   router: Router,
   route: string,
   model: Model<any>,
-  middlewares: Array<RequestHandler>
+  middlewares: Array<RequestHandler>,
+  select: string | object
 ) => {
   router.get(
     route + "/:id",
     middlewares,
     async (req: Request, res: Response, next: NextFunction) => {
       const { id } = req.params;
-      const item = await model.findOne({ _id: id });
+      const item = await model.findOne({ _id: id }).select(select);
       if (!item) {
         res.status(404).json({ error: "Not fould" });
         return;
@@ -113,14 +116,16 @@ const create = (
   router: Router,
   route: string,
   model: Model<any>,
-  middlewares: Array<RequestHandler>
+  middlewares: Array<RequestHandler>,
+  select: string | object
 ) => {
   router.post(
     route + "/",
     middlewares,
     async (req: Request, res: Response, next: NextFunction) => {
       const data = req.body;
-      const item = await model.create(data);
+      const createdItem = await model.create(data);
+      const item = await model.findOne({ _id: createdItem._id }).select(select);
       res.status(201).json(renameId([item])[0]);
     }
   );
@@ -133,7 +138,8 @@ const update = (
   router: Router,
   route: string,
   model: Model<any>,
-  middlewares: Array<RequestHandler>
+  middlewares: Array<RequestHandler>,
+  select: string | object
 ) => {
   router.put(
     route + "/:id",
@@ -141,7 +147,7 @@ const update = (
     async (req: Request, res: Response, next: NextFunction) => {
       const { id } = req.params;
       const data = req.body;
-      const item = await model.findOne({ _id: id });
+      const item = await model.findOne({ _id: id }).select(select);
       if (!item) {
         res.status(404).json({ error: "Not fould" });
         return;
@@ -160,14 +166,15 @@ const delete_ = (
   router: Router,
   route: string,
   model: Model<any>,
-  middlewares: Array<RequestHandler>
+  middlewares: Array<RequestHandler>,
+  select: string | object
 ) => {
   router.delete(
     route + "/:id",
     middlewares,
     async (req: Request, res: Response, next: NextFunction) => {
       const { id } = req.params;
-      await model.deleteOne({ _id: id });
+      await model.deleteOne({ _id: id }).select(select);
       res.json({ id });
     }
   );
@@ -187,6 +194,7 @@ type restProps = {
   model: Model<any>;
   actions?: Array<string>;
   middlewares?: Array<RequestHandler>;
+  select?: string | object;
 };
 
 /*
@@ -197,10 +205,11 @@ const rest = ({
   route = "",
   model,
   actions = Object.keys(ACTION_TO_FUNC),
-  middlewares = []
+  middlewares = [],
+  select = ""
 }: restProps) => {
   actions.forEach(action => {
-    ACTION_TO_FUNC[action](router, route, model, middlewares);
+    ACTION_TO_FUNC[action](router, route, model, middlewares, select);
   });
   return router;
 };

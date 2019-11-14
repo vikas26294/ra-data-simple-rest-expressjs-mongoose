@@ -19,14 +19,14 @@ var User = require("./models/User");
 
 var app = express();
 app.use(bodyParser.json({ limit: "50mb" }));
-app.use(bodyParser.urlencoded({ extended: true }));
 
 rest.default({
   router: app,
   route: "/user",
   model: User,
   actions: [rest.CREATE, rest.GET_LIST, rest.GET_ONE, rest.UPDATE, rest.DELETE],
-  middlewares: []
+  middlewares: [],
+  select: "+name +username -password"
 });
 ```
 
@@ -41,3 +41,4 @@ The `default` function takes mandatory object that contain following keys:
 | model       | Mongoose.Model   | null                                                                 | Mongoose model to create APIs for |
 | actions     | array            | [rest.CREATE, rest.GET_LIST, rest.GET_ONE, rest.UPDATE, rest.DELETE] | apis to expose                    |
 | middlewares | array            | []                                                                   | any middlewares to apply on apis  |
+| select      | string           | ""                                                                   | columns to select                 |

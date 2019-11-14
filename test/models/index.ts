@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 export * from "./user";
 
 export const connect = (url: string) => {
