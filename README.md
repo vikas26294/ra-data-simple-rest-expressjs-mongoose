@@ -11,13 +11,13 @@ npm install --save ra-data-simple-rest-expressjs-mongoose
 ## Usage
 
 ```ts
-var express = require("express");
-var bodyParser = require("body-parser");
-var rest = require("ra-data-simple-rest-expressjs-mongoose");
+const express = require("express");
+const bodyParser = require("body-parser");
+const rest = require("ra-data-simple-rest-expressjs-mongoose");
 
-var User = require("./models/User");
+const User = require("./models/User");
 
-var app = express();
+const app = express();
 app.use(bodyParser.json({ limit: "50mb" }));
 
 rest.default({
