@@ -1,6 +1,6 @@
 {
   "name": "ra-data-simple-rest-expressjs-mongoose",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Express js backend utility for ra-data-simple-rest",
   "main": "dist/index.js",
   "scripts": {
