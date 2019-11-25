@@ -125,5 +125,19 @@ describe("User Test", () => {
     expect(users[0].name).toBe("Balwada");
     expect(users[0]).not.toHaveProperty("username");
     expect(users[0].password).toBe("123456");
+
+    // filter - get list of users
+    res = await request(app)
+      .get("/users")
+      .query({
+        filter: JSON.stringify({ username: ["vikas26", "boba"] })
+      });
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveLength(2);
+    users = res.body;
+    expect(users).toMatchObject([
+      { name: "Balwada", password: "123456" },
+      { name: "Boba", password: "bob1234" }
+    ]);
   });
 });

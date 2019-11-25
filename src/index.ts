@@ -72,7 +72,17 @@ const getList = (
             delete filter.id;
             break;
           default:
-            filter[key] = new RegExp(value, "i");
+            if (typeof value !== "object") {
+              filter[key] = new RegExp(value, "i");
+            } else if (Array.isArray(value)) {
+              // array
+              filter["$or"] = value.map(val => {
+                return { [key]: val };
+              });
+              delete filter[key];
+            } else {
+              // object
+            }
         }
       });
 
