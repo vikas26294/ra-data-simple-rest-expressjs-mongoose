@@ -63,10 +63,19 @@ const getList = (
       }
 
       filter = filter ? JSON.parse(filter) : {};
-      if ("id" in filter) {
-        filter._id = filter.id;
-        delete filter.id;
-      }
+      Object.entries(filter).map(([key, value]: any) => {
+        switch (key) {
+          case "_id":
+            break;
+          case "id":
+            filter._id = filter.id;
+            delete filter.id;
+            break;
+          default:
+            filter[key] = new RegExp(value, "i");
+        }
+      });
+
       const items = renameId(
         await model
           .find(filter)

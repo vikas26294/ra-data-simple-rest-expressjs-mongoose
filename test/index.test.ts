@@ -74,12 +74,13 @@ describe("User Test", () => {
       .send({ name: "Jeff", username: "jeff", password: "jeff1234" });
     await request(app)
       .post("/users")
-      .send({ name: "Bob", username: "bob", password: "bob1234" });
+      .send({ name: "Boba", username: "boba", password: "bob1234" });
     await request(app)
       .post("/users")
-      .send({ name: "Steven", username: "jeff", password: "steven1234" });
+      .send({ name: "Steven", username: "steven", password: "steven1234" });
 
     // get list of users
+    let users: any;
     res = await request(app)
       .get("/users")
       .query({
@@ -88,12 +89,41 @@ describe("User Test", () => {
       });
     expect(res.status).toBe(200);
     expect(res.body).toHaveLength(2);
-    const users = res.body;
+    users = res.body;
     expect(users[0].name).toBe("Balwada");
     expect(users[0]).not.toHaveProperty("username");
     expect(users[0].password).toBe("123456");
-    expect(users[1].name).toBe("Bob");
+    expect(users[1].name).toBe("Boba");
     expect(users[1]).not.toHaveProperty("username");
     expect(users[1].password).toBe("bob1234");
+
+    // filter - get list of users
+    res = await request(app)
+      .get("/users")
+      .query({
+        filter: JSON.stringify({ name: "ba" })
+      });
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveLength(2);
+    users = res.body;
+    expect(users[0].name).toBe("Balwada");
+    expect(users[0]).not.toHaveProperty("username");
+    expect(users[0].password).toBe("123456");
+    expect(users[1].name).toBe("Boba");
+    expect(users[1]).not.toHaveProperty("username");
+    expect(users[1].password).toBe("bob1234");
+
+    // filter - get list of users
+    res = await request(app)
+      .get("/users")
+      .query({
+        filter: JSON.stringify({ name: "ba", username: "kas" })
+      });
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveLength(1);
+    users = res.body;
+    expect(users[0].name).toBe("Balwada");
+    expect(users[0]).not.toHaveProperty("username");
+    expect(users[0].password).toBe("123456");
   });
 });
