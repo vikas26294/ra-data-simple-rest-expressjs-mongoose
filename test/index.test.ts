@@ -140,6 +140,17 @@ describe("User Test", () => {
       { name: "Boba", password: "bob1234" }
     ]);
 
+    // filter - by object id
+    res = await request(app)
+      .get("/users")
+      .query({
+        filter: JSON.stringify({ _id: id })
+      });
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveLength(1);
+    users = res.body;
+    expect(users).toMatchObject([{ name: "Balwada", password: "123456" }]);
+
     // filter - full text search
     res = await request(app)
       .get("/users")

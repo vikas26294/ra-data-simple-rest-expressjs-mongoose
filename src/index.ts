@@ -5,7 +5,7 @@ import {
   Response,
   Router
 } from "express";
-import { Model } from "mongoose";
+import { Model, Types } from "mongoose";
 
 export const GET_LIST = "GET_LIST";
 export const GET_ONE = "GET_ONE";
@@ -77,7 +77,13 @@ const getList = (
             break;
           default:
             if (typeof value !== "object") {
-              filter[key] = new RegExp(value, "i");
+              if (Types.ObjectId.isValid(value)) {
+                // object id
+                filter[key] = Types.ObjectId(value);
+              } else {
+                // string, number
+                filter[key] = new RegExp(value, "i");
+              }
             } else if (Array.isArray(value)) {
               // array
               filter["$or"] = value.map(val => {
