@@ -71,6 +71,10 @@ const getList = (
             filter._id = filter.id;
             delete filter.id;
             break;
+          case "q":
+            filter["$text"] = { $search: `\"${value}\"` };
+            delete filter.q;
+            break;
           default:
             if (typeof value !== "object") {
               filter[key] = new RegExp(value, "i");

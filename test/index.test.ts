@@ -139,5 +139,16 @@ describe("User Test", () => {
       { name: "Balwada", password: "123456" },
       { name: "Boba", password: "bob1234" }
     ]);
+
+    // filter - full text search
+    res = await request(app)
+      .get("/users")
+      .query({
+        filter: JSON.stringify({ q: "vikas26" })
+      });
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveLength(1);
+    users = res.body;
+    expect(users).toMatchObject([{ name: "Balwada", password: "123456" }]);
   });
 });

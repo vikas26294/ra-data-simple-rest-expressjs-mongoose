@@ -13,4 +13,6 @@ const schema = new Schema({
   password: { type: String, required: true, select: false }
 });
 
+schema.index({ name: "text", username: "text" });
+
 export const User: UserModel = model<UserDoc, UserModel>("User", schema);
